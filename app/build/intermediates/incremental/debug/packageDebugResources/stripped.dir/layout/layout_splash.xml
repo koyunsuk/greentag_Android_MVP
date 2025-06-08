@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/splashLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="#000000"
+    android:gravity="center"
+    android:textColor="#FFFFFF">
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="중원대학교"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/subtitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="다회용 컵 루틴"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="24dp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:id="@+id/textViewSummary"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:text="지금까지 접수한 컵 0 개"
+        android:textColor="#FFFFFF"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/textViewCo2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="↓ 0.00 kg"
+        android:textSize="18sp"
+        android:textColor="#00FF00"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/textViewTree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="모두가 힘을 합쳐 0 그루의 나무를 심었어요!"
+        android:textSize="16sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="8dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:progress="0"
+        android:max="3000"
+        android:progressDrawable="@android:drawable/progress_horizontal"
+        android:layout_marginBottom="24dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/buttonReturn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:background="#2196F3"
+            android:padding="16dp"
+            android:text="바로\n반납하기"
+            android:textColor="#212121"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/buttonBenefit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="반납하고\n혜택받기"
+            android:textSize="16sp"
+            android:padding="16dp"
+            android:textColor="#FFFFFF"
+            android:background="#3F51B5"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#444444"
+        android:text="초기화"
+        android:textColor="#FF9800" />
+
+</LinearLayout>

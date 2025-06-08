@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "C:\\Users\\koyun\\.gradle\\daemon\\8.10\\com.greentag.app-mergeDebugResources-38:\\layout\\layout_splash.xml",
+        "source": "C:\\Users\\koyun\\.gradle\\daemon\\8.10\\com.greentag.app-main-41:\\layout\\layout_splash.xml"
+    },
+    {
+        "merged": "com.greentag.app-mergeDebugResources-38:/layout/layout_splash.xml",
+        "source": "com.greentag.app-main-41:/layout/layout_splash.xml"
+    }
+]

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "657156499491",
+    "project_id": "greentag-5de1a",
+    "storage_bucket": "greentag-5de1a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657156499491:android:322a80db86f0ac464d2996",
+        "android_client_info": {
+          "package_name": "com.greenTag01.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRqOw1DYMYhfzX6ZgAvX5B5daoOBZPJEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657156499491:android:38db2c137d049a3c4d2996",
+        "android_client_info": {
+          "package_name": "com.greentag.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRqOw1DYMYhfzX6ZgAvX5B5daoOBZPJEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,53 @@
+// ✅ 꼭 필요함: Room annotation processor용
+apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-kapt' // ✅ Room을 위해 반드시 필요
+
+android {
+    namespace 'com.greentag.app'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.greentag.app"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.9.0'
+    implementation files('libs/acssmc-1.1.4.jar')
+
+    // ✅ Room: Local DB 회수율 저장용
+    implementation "androidx.room:room-runtime:2.7.1"
+    kapt "androidx.room:room-compiler:2.7.1"
+
+    // ✅ LifecycleScope 등 Coroutine + Lifecycle 연동용
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
+}
