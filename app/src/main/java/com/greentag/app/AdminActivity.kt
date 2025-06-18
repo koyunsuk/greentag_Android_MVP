@@ -1,95 +1,195 @@
-package com.greentag.app
+package com.greentag.app.data
 
-import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ListView
-import android.widget.Toast
+import android.view.View
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.greentag.app.data.AppDatabase
-import com.greentag.app.util.CsvExporter
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.core.content.FileProvider
+import com.greentag.app.AppDatabase
+import com.greentag.app.R
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
+import java.io.FileWriter
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AdminActivity : AppCompatActivity() {
 
-    private lateinit var buttonCsv: Button
-    private lateinit var buttonExcel: Button
-    private lateinit var buttonReset: Button
-    private lateinit var buttonBack: Button
-    private lateinit var listView: ListView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: CupHistoryAdapter
+    private lateinit var buttonExportCsv: Button
+    private lateinit var buttonShareCsv: Button
+    private lateinit var buttonResetDb: Button
+    private lateinit var adminLayout: LinearLayout
+    private lateinit var textTotalCount: TextView // ✅ 추가
+
+    private val correctPassword = "1234"
+    private var exportedCsvFile: File? = null // 공유용 파일 캐싱
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin)
 
-        // ✅ 버튼과 리스트뷰 연결
-        buttonCsv = findViewById(R.id.buttonExportCsv)
-        buttonExcel = findViewById(R.id.buttonExportExcel)
-        buttonReset = findViewById(R.id.buttonResetDatabase)
-        buttonBack = findViewById(R.id.buttonBackToMain)
-        listView = findViewById(R.id.listViewCups)
+        recyclerView = findViewById(R.id.recyclerViewHistory)
+        buttonExportCsv = findViewById(R.id.buttonExportCsv)
+        buttonShareCsv = findViewById(R.id.buttonShareCsv)
+        buttonResetDb = findViewById(R.id.buttonDBreset)
+        adminLayout = findViewById(R.id.adminLayout)
+        textTotalCount = findViewById(R.id.textViewTotal)
 
-        updateListView()
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        adapter = CupHistoryAdapter()
+        recyclerView.adapter = adapter
 
-        // ✅ CSV 내보내기
-        buttonCsv.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val data = AppDatabase.getDatabase(this@AdminActivity).cupReturnDao().getAll()
-                val file: File? = CsvExporter.export(this@AdminActivity, data)
-                launch(Dispatchers.Main) {
-                    if (file != null) {
-                        Toast.makeText(
-                            this@AdminActivity,
-                            "✅ CSV 내보내기 완료: ${file.absolutePath}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    } else {
-                        Toast.makeText(this@AdminActivity, "❌ CSV 저장 실패", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
+        buttonExportCsv.setOnClickListener {
+            exportCsv()
         }
 
-        // ⏳ Excel (준비 중)
-        buttonExcel.setOnClickListener {
-            Toast.makeText(this, "📦 엑셀 저장 기능은 추후 업데이트 예정입니다.", Toast.LENGTH_SHORT).show()
+        buttonShareCsv.setOnClickListener {
+            shareCsv()
         }
 
-        // 🔄 DB 초기화
-        buttonReset.setOnClickListener {
+        buttonResetDb.setOnClickListener {
             AlertDialog.Builder(this)
-                .setTitle("초기화")
-                .setMessage("모든 반납 데이터를 삭제하시겠습니까?")
-                .setPositiveButton("예") { _, _ ->
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        AppDatabase.getDatabase(this@AdminActivity).cupReturnDao().deleteAll()
-                        launch(Dispatchers.Main) {
-                            updateListView()
-                            Toast.makeText(this@AdminActivity, "✅ 데이터 초기화 완료", Toast.LENGTH_SHORT).show()
-                        }
-                    }
+                .setTitle("DB 초기화")
+                .setMessage("정말로 모든 반납 데이터를 삭제하시겠습니까?")
+                .setPositiveButton("삭제") { _, _ ->
+                    resetDatabase()
                 }
-                .setNegativeButton("아니오", null)
+                .setNegativeButton("취소", null)
                 .show()
         }
 
-        // 🔙 메인화면으로 돌아가기
-        buttonBack.setOnClickListener {
-            finish() // SplashActivity로 돌아감
-        }
+
+        findViewById<Button>(R.id.buttonGoHome).setOnClickListener {
+            finish() }
+
+        loadData()
     }
 
-    // 🔄 리스트뷰 업데이트
-    private fun updateListView() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            val data = AppDatabase.getDatabase(this@AdminActivity).cupReturnDao().getAll()
-            val adapter = CSVPreviewAdapter(this@AdminActivity, data)
-            launch(Dispatchers.Main) {
-                listView.adapter = adapter
+    private fun loadData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val history = AppDatabase.getDatabase(this@AdminActivity).cupReturnDao().getAll()
+            runOnUiThread {
+                adapter.setData(history)
+                textTotalCount.text = "총 반납 수량: ${history.size}개" // ✅ 갱신
             }
         }
     }
+
+    private fun resetDatabase() {
+        CoroutineScope(Dispatchers.IO).launch {
+            AppDatabase.getDatabase(this@AdminActivity).cupReturnDao().deleteAll()
+            runOnUiThread {
+                adapter.setData(emptyList())
+                textTotalCount.text = "총 반납 수량: 0개" // ✅ 초기화 시 갱신
+                Toast.makeText(this@AdminActivity, "초기화 완료", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun exportCsv() {
+        CoroutineScope(Dispatchers.IO).launch {
+            val data = AppDatabase.getDatabase(this@AdminActivity).cupReturnDao().getAll()
+            if (data.isEmpty()) {
+                runOnUiThread {
+                    Toast.makeText(this@AdminActivity, "저장할 데이터가 없습니다", Toast.LENGTH_SHORT).show()
+                }
+                return@launch
+            }
+
+            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val fileName = "greentag_$timeStamp.csv"
+            val exportDir = File(getExternalFilesDir(null), "exports")
+            if (!exportDir.exists()) exportDir.mkdirs()
+
+            val file = File(exportDir, fileName)
+            try {
+                FileWriter(file).use { writer ->
+                    writer.appendLine("uid,alias,customer,location,status,size,timestamp")
+                    for (item in data) {
+                        writer.appendLine("${item.uid},${item.alias},${item.customer},${item.location},${item.status},${item.size},${item.timestamp}")
+                    }
+                }
+                exportedCsvFile = file
+                runOnUiThread {
+                    Toast.makeText(this@AdminActivity, "CSV 저장 완료: ${file.absolutePath}", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(this@AdminActivity, "CSV 저장 실패: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+
+    private fun shareCsv() {
+        if (exportedCsvFile == null || !exportedCsvFile!!.exists()) {
+            // CSV가 없으면 먼저 생성 시도
+            CoroutineScope(Dispatchers.IO).launch {
+                val data = AppDatabase.getDatabase(this@AdminActivity).cupReturnDao().getAll()
+                if (data.isEmpty()) {
+                    runOnUiThread {
+                        Toast.makeText(this@AdminActivity, "공유할 데이터가 없습니다", Toast.LENGTH_SHORT).show()
+                    }
+                    return@launch
+                }
+
+                val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+                val fileName = "greentag_$timeStamp.csv"
+                val exportDir = File(getExternalFilesDir(null), "exports")
+                if (!exportDir.exists()) exportDir.mkdirs()
+
+                val file = File(exportDir, fileName)
+                try {
+                    FileWriter(file).use { writer ->
+                        writer.appendLine("uid,alias,customer,location,status,size,timestamp")
+                        for (item in data) {
+                            writer.appendLine("${item.uid},${item.alias},${item.customer},${item.location},${item.status},${item.size},${item.timestamp}")
+                        }
+                    }
+                    exportedCsvFile = file
+
+                    runOnUiThread {
+                        shareCsvFile(file)
+                    }
+                } catch (e: IOException) {
+                    runOnUiThread {
+                        Toast.makeText(this@AdminActivity, "CSV 저장 실패: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        } else {
+            shareCsvFile(exportedCsvFile!!)
+        }
+    }
+
+    private fun shareCsvFile(file: File) {
+        val uri: Uri = FileProvider.getUriForFile(
+            this,
+            "$packageName.fileprovider",
+            file
+        )
+
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/csv"
+            putExtra(Intent.EXTRA_STREAM, uri)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        try {
+            startActivity(Intent.createChooser(intent, "CSV 파일 공유"))
+        } catch (e: Exception) {
+            Toast.makeText(this, "공유 실패: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
 }

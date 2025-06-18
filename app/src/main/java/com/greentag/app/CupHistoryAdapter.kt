@@ -5,19 +5,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.greentag.app.CupReturn
 import com.greentag.app.R
+import com.greentag.app.CupReturn
 
 class CupHistoryAdapter : RecyclerView.Adapter<CupHistoryAdapter.ViewHolder>() {
 
-    private var dataList: List<CupReturn> = emptyList()
+    private val cupList: MutableList<CupReturn> = mutableListOf()
 
-    fun submitList(data: List<CupReturn>) {
-        dataList = data
+    fun setData(data: List<CupReturn>) {
+        cupList.clear()
+        cupList.addAll(data)
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textAlias: TextView = itemView.findViewById(R.id.textAlias)
         val textCustomer: TextView = itemView.findViewById(R.id.textCustomer)
         val textLocation: TextView = itemView.findViewById(R.id.textLocation)
@@ -26,18 +27,21 @@ class CupHistoryAdapter : RecyclerView.Adapter<CupHistoryAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_cup_row, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_cup_row, parent, false)
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = dataList.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val entry = dataList[position]
-        holder.textAlias.text = entry.alias
-        holder.textCustomer.text = entry.customer
-        holder.textLocation.text = entry.location
-        holder.textSize.text = entry.size
-        holder.textTimestamp.text = entry.timestamp.toString()
+        val item = cupList[position]
+        holder.textAlias.text = item.alias
+        holder.textCustomer.text = item.customer
+        holder.textLocation.text = item.location
+        holder.textSize.text = item.size
+        holder.textTimestamp.text = item.timestamp.toString()
+    }
+
+    override fun getItemCount(): Int {
+        return cupList.size
     }
 }

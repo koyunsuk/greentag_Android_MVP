@@ -1,9 +1,8 @@
-package com.greentag.app.util
+package com.greentag.app
 
 import android.content.Context
 import android.os.Environment
 import android.util.Log
-import com.greentag.app.data.CupReturn
 import java.io.File
 import java.io.FileWriter
 import java.text.SimpleDateFormat

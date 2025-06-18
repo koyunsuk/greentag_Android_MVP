@@ -1,10 +1,9 @@
-package com.greentag.app.data
+package com.greentag.app
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.greentag.app.CSVPreviewAdapter
 
 
 @Database(entities = [CupReturn::class], version = 1)

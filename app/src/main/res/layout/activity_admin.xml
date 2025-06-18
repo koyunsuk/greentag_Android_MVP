@@ -1,6 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/adminLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#000000"
+    android:padding="16dp">
+    <!-- 🔧 textViewTotal -->
+    <TextView
+        android:id="@+id/textViewTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="총 반납 수량: 0개"
+        android:textColor="#00FF00"
+        android:textSize="25sp"
+        android:layout_marginTop="8dp" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewHistory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:background="#1A1A1A" />
+    <!-- 🔧 buttonShareCsv -->
+    <Button
+        android:id="@+id/buttonShareCsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📨 엑셀로 공유하기"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textViewSavePath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="📁 저장 경로: -"
+        android:textColor="#CCCCCC"
+        android:textSize="14sp" />
+
+<!--    <Button-->
+<!--        android:id="@+id/buttonHome"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="🏠 홈으로"-->
+<!--        android:textSize="18sp"-->
+<!--        android:layout_marginBottom="8dp" />-->
+
+    <Button
+        android:id="@+id/buttonExportCsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📤 엑셀로 내보내기"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+    <Button
+        android:id="@+id/buttonDBreset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🗑 목록 초기화"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBarExport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp" />
+
+
+    <!-- 🔧 textViewSavePath -->
+
+    <!-- 🔧 textViewShareStatus -->
+    <TextView
+        android:id="@+id/textViewShareStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textColor="#66FF66"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp" />
+
+    <!-- ✅ progressBarExport → 이름 일치 필요 -->
+    <ProgressBar
+        android:id="@+id/progressBarShare"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp" />
+
+    <!-- 🔧 buttonGoHome -->
+    <Button
+        android:id="@+id/buttonGoHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🏠 홈으로"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+
+</LinearLayout>

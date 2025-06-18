@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.greentag.app.data.CupReturn
 
 class CSVPreviewAdapter(
     private val context: Context,

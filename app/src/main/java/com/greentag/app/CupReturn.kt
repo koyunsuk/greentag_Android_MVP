@@ -1,4 +1,4 @@
-package com.greentag.app.data
+package com.greentag.app
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -11,9 +11,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GreenTag">
 
-        <!-- ✅ SplashActivity: 앱 실행 진입점 -->
+        <!-- ✅ CSV 공유를 위한 FileProvider 설정 -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- ✅ 앱 실행 진입점 -->
         <activity
-            android:name=".SplashActivity"
+            android:name="SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.GreenTag">
             <intent-filter>
@@ -22,7 +33,7 @@
             </intent-filter>
         </activity>
 
-                <!-- ✅ UsbNfcReaderActivity: 외부 리더기 UID 읽기 -->
+        <!-- ✅ 외부 USB 리더기용 액티비티 -->
         <activity
             android:name=".UsbNfcReaderActivity"
             android:exported="true">
@@ -34,6 +45,10 @@
                 android:resource="@xml/device_filter" />
         </activity>
 
+        <!-- ✅ 관리자 모드 액티비티 -->
+        <activity
+            android:name=".data.AdminActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

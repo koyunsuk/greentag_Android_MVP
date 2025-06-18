@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/splashLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,72 +8,104 @@
     android:padding="24dp"
     android:background="#000000"
     android:gravity="center"
+    android:layerType="software"
     android:textColor="#FFFFFF">
 
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <!-- 🟢 상단 로고 아이콘 -->
+    <ImageView
+        android:id="@+id/imageLogo"
+        android:layout_width="351dp"
+        android:layout_height="84dp"
         android:layout_gravity="center"
-        android:text="중원대학교"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/jw_univ_logo_wide" />
+
+    <!-- 📛 학교명 -->
 
     <TextView
         android:id="@+id/subtitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="다회용 컵 루틴"
-        android:textSize="24sp"
+        android:text="컵 반납 수거 시스템"
+        android:textSize="26sp"
         android:textColor="#FFFFFF"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="28dp"
         android:layout_gravity="center"/>
 
+    <!-- 📦 총 반납량 -->
     <TextView
         android:id="@+id/textViewSummary"
-        android:layout_width="300dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginBottom="14dp"
         android:text="지금까지 접수한 컵 0 개"
         android:textColor="#FFFFFF"
-        android:textSize="30sp" />
+        android:textSize="32sp"
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/textViewCo2"
+    <!-- 🌿 CO₂ 절감 -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="↓ 0.00 kg"
-        android:textSize="18sp"
-        android:textColor="#00FF00"
-        android:layout_marginBottom="12dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="12dp">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_compass"
+            android:layout_marginEnd="8dp"
+            app:tint="#00FF00" />
+        <TextView
+            android:id="@+id/textViewCo2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="↓ 0.00 kg"
+            android:textSize="22sp"
+            android:textColor="#00FF00" />
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/textViewTree"
+    <!-- 🌲 나무 효과 -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="모두가 힘을 합쳐 0 그루의 나무를 심었어요!"
-        android:textSize="16sp"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="8dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_myplaces"
+            android:layout_marginEnd="8dp"
+            app:tint="#A5D6A7" />
+        <TextView
+            android:id="@+id/textViewTree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="모두가 힘을 합쳐 0 그루의 나무를 심었어요!"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
 
+    <!-- 📈 반납률 Progress -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="14dp"
         android:progress="0"
         android:max="3000"
         android:progressDrawable="@android:drawable/progress_horizontal"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="28dp"/>
 
+    <!-- 📤 버튼 2개 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginTop="12dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="20dp">
 
         <Button
             android:id="@+id/buttonReturn"
@@ -81,10 +114,11 @@
             android:layout_marginEnd="12dp"
             android:layout_weight="1"
             android:background="#2196F3"
-            android:padding="16dp"
+            android:elevation="4dp"
+            android:padding="20dp"
             android:text="바로\n반납하기"
             android:textColor="#212121"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/buttonBenefit"
@@ -92,19 +126,36 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="반납하고\n혜택받기"
-            android:textSize="16sp"
-            android:padding="16dp"
+            android:textSize="18sp"
+            android:padding="20dp"
             android:textColor="#FFFFFF"
-            android:background="#3F51B5"/>
+            android:background="#3F51B5"
+            android:elevation="4dp"/>
     </LinearLayout>
 
+    <!-- 🔄 초기화 버튼 -->
+
     <Button
-        android:id="@+id/buttonReset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/buttonAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="92dp"
         android:layout_gravity="center"
-        android:background="#444444"
-        android:text="초기화"
-        android:textColor="#FF9800" />
+        android:layout_marginTop="16dp"
+        android:background="#FFEB3B"
+        android:elevation="3dp"
+        android:minHeight="48dp"
+        android:text="🔒 관리자 모드 들어가기"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textViewMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" 반납 대기"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>
